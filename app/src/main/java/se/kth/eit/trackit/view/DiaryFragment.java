@@ -2,7 +2,9 @@ package se.kth.eit.trackit.view;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import se.kth.eit.trackit.persistence.HelperFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,8 +14,6 @@ import java.util.List;
  * Diary list fragment.
  */
 public class DiaryFragment extends ListFragment {
-
-    private List<Date> testData;
 
     public DiaryFragment() {
     }
@@ -30,8 +30,12 @@ public class DiaryFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setUpListView();
-        setUpTestData();
-        setListAdapter(new DiaryListAdapter(getContext(), testData));
+        try {
+            setListAdapter(new DiaryListAdapter(getContext(), HelperFactory.getHelper()
+                    .getDiaryDAO().getAllDates()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -41,18 +45,5 @@ public class DiaryFragment extends ListFragment {
         getListView().setDivider(null);
         getListView().setDividerHeight(50);
         getListView().setDrawSelectorOnTop(true);
-    }
-
-    /**
-     * Sets up test data. Will be removed with real data after design finished.
-     */
-    public void setUpTestData() {
-        testData = new ArrayList<>();
-        testData.add(new Date());
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -1);
-        testData.add(calendar.getTime());
-        calendar.add(Calendar.DATE, -1);
-        testData.add(calendar.getTime());
     }
 }
