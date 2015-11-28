@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 import se.kth.eit.trackit.persistence.HelperFactory;
+import se.kth.eit.trackit.view.DiaryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager viewPager;
 
+    /**
+     * Floating action button.
+     */
+    private FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,18 +51,15 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        setupViewPager();
+        setupFAButton();
+    }
 
-        // Set up the ViewPager with the sections adapter.
-        viewPager = (ViewPager) findViewById(R.id.container);
-        viewPager.setAdapter(sectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    /**
+     * Sets up floating action button.
+     */
+    private void setupFAButton() {
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +67,21 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    /**
+     * Sets up view pager (tabs view).
+     */
+    private void setupViewPager() {
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Set up the ViewPager with the sections adapter.
+        viewPager = (ViewPager) findViewById(R.id.container);
+        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.addOnPageChangeListener(sectionsPagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -133,7 +151,8 @@ public class MainActivity extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentPagerAdapter
+            implements ViewPager.OnPageChangeListener {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -141,8 +160,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
+            if (position == 0) {
+                return new DiaryFragment();
+            }
             return PlaceholderFragment.newInstance(position + 1);
         }
 
@@ -161,6 +181,26 @@ public class MainActivity extends AppCompatActivity {
                     return "RESULTS";
             }
             return null;
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset,
+                int positionOffsetPixels) {
+            //Not used.
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            if (position == 0) {
+                fab.show();
+            } else {
+                fab.hide();
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            //Not used.
         }
     }
 }
