@@ -11,6 +11,8 @@ import java.util.Date;
 @DatabaseTable(tableName = "diary_entries")
 public class DiaryEntry {
 
+    public final static String DATE_FIELD_NAME = "date";
+
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -20,7 +22,7 @@ public class DiaryEntry {
     @DatabaseField(canBeNull = false)
     private String entry;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, columnName = DATE_FIELD_NAME)
     private Date date;
 
     DiaryEntry() {
@@ -31,5 +33,9 @@ public class DiaryEntry {
         this.type = type;
         this.entry = entry;
         this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

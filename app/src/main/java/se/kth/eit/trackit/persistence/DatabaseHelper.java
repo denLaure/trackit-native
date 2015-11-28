@@ -6,8 +6,11 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import se.kth.eit.trackit.model.DiaryEntry;
+import se.kth.eit.trackit.model.DiaryEntryType;
 
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Database open helper.
@@ -44,6 +47,15 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, DiaryEntry.class);
+            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Pasta", new Date()));
+            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Coffee", new Date()));
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1);
+            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Risotto", calendar.getTime()));
+            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Tea", calendar.getTime()));
+            calendar.add(Calendar.DATE, -5);
+            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Cabbage", calendar.getTime()));
+            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Juice", calendar.getTime()));
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
