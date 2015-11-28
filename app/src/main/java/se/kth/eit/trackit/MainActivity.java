@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 import se.kth.eit.trackit.persistence.HelperFactory;
+import se.kth.eit.trackit.view.DiaryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -141,8 +142,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
+            if (position == 0) {
+                return new DiaryFragment();
+            }
             return PlaceholderFragment.newInstance(position + 1);
         }
 
