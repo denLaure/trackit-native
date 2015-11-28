@@ -39,7 +39,7 @@ public class DiaryFragment extends ListFragment {
      */
     public void setUpListView() {
         getListView().setDivider(null);
-        getListView().setDividerHeight(30);
+        getListView().setDividerHeight(50);
         getListView().setDrawSelectorOnTop(true);
     }
 
