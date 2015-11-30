@@ -15,6 +15,7 @@ public class DiaryEntry {
 
     public final static String DATE_FIELD_NAME = "date";
     public final static String FORMATTED_DATE_FIELD_NAME = "formatted_date";
+    public final static String ENTRY_FIELD_NAME = "entry";
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -22,7 +23,7 @@ public class DiaryEntry {
     @DatabaseField(canBeNull = false)
     private DiaryEntryType type;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, columnName = ENTRY_FIELD_NAME)
     private String entry;
 
     @DatabaseField(canBeNull = false, columnName = DATE_FIELD_NAME)
@@ -51,5 +52,9 @@ public class DiaryEntry {
 
     public String getFormattedDate() {
         return formattedDate;
+    }
+
+    public String getEntry() {
+        return entry;
     }
 }
