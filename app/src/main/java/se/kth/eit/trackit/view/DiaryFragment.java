@@ -5,10 +5,6 @@ import android.support.v4.app.ListFragment;
 import se.kth.eit.trackit.persistence.HelperFactory;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Diary list fragment.
