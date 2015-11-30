@@ -8,7 +8,6 @@ import se.kth.eit.trackit.model.DiaryEntry;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,14 +31,15 @@ public class DiaryEntriesDAO extends BaseDaoImpl<DiaryEntry, Integer> {
      * @return list of all dates in the diary.
      * @throws SQLException if failed to execute SQL query.
      */
-    public List<Date> getAllDates() throws SQLException {
+    public List<String> getAllDates() throws SQLException {
         QueryBuilder<DiaryEntry, Integer> queryBuilder = this.queryBuilder();
-        PreparedQuery<DiaryEntry> preparedQuery = queryBuilder.distinct()
-                .selectColumns(DiaryEntry.DATE_FIELD_NAME).prepare();
+        PreparedQuery<DiaryEntry> preparedQuery = queryBuilder.selectColumns(DiaryEntry
+                .FORMATTED_DATE_FIELD_NAME).groupBy(DiaryEntry.DATE_FIELD_NAME)
+                .orderBy(DiaryEntry.DATE_FIELD_NAME, false).prepare();
         List<DiaryEntry> diaryEntries = this.query(preparedQuery);
-        List<Date> dates = new ArrayList<>();
+        List<String> dates = new ArrayList<>();
         for (DiaryEntry entry : diaryEntries) {
-            dates.add(entry.getDate());
+            dates.add(entry.getFormattedDate());
         }
         return dates;
     }
