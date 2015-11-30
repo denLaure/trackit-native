@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import se.kth.eit.trackit.R;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,9 +17,9 @@ public class DiaryListAdapter extends BaseAdapter {
 
     Context context;
 
-    private List<Date> datesList;
+    private List<String> datesList;
 
-    public DiaryListAdapter(Context context, List<Date> datesList) {
+    public DiaryListAdapter(Context context, List<String> datesList) {
         this.context = context;
         this.datesList = datesList;
     }
@@ -58,8 +57,7 @@ public class DiaryListAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.diary_list_item, viewGroup, false);
         }
-        Date date = datesList.get(i);
-        ((TextView) view.findViewById(R.id.date_label)).setText(date.toString());
+        ((TextView) view.findViewById(R.id.date_label)).setText(datesList.get(i));
         return view;
     }
 }
