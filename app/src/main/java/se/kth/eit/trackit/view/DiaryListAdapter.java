@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import se.kth.eit.trackit.R;
+import se.kth.eit.trackit.model.DiaryEntry;
 import se.kth.eit.trackit.persistence.HelperFactory;
 
 import java.sql.SQLException;
@@ -80,12 +81,11 @@ public class DiaryListAdapter extends BaseAdapter {
         ViewGroup gr = (ViewGroup) view.findViewById(R.id.date_list_layout);
         if (gr.getChildCount() == 0) {
             try {
-                List<String> list = HelperFactory.getHelper().getDiaryDAO()
+                List<DiaryEntry> list = HelperFactory.getHelper().getDiaryDAO()
                         .getEntriesByDate(date);
-                for (String food : list) {
-                    TextView tv = new TextView(context);
-                    tv.setText(food);
-                    ((ViewGroup) view.findViewById(R.id.date_list_layout)).addView(tv);
+                for (DiaryEntry entry : list) {
+                    DiaryEntryView entryView = new DiaryEntryView(context, entry);
+                    ((ViewGroup) view.findViewById(R.id.date_list_layout)).addView(entryView);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

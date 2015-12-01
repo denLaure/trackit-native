@@ -49,17 +49,12 @@ public class DiaryEntriesDAO extends BaseDaoImpl<DiaryEntry, Integer> {
      * @return list of all entries that belong to given formatted date.
      * @throws SQLException if failed to execute SQL query.
      */
-    public List<String> getEntriesByDate(String formattedDate) throws SQLException {
+    public List<DiaryEntry> getEntriesByDate(String formattedDate) throws SQLException {
         QueryBuilder<DiaryEntry, Integer> queryBuilder = this.queryBuilder();
         PreparedQuery<DiaryEntry> preparedQuery = queryBuilder.selectColumns(DiaryEntry
-                .ENTRY_FIELD_NAME).where().eq(DiaryEntry.FORMATTED_DATE_FIELD_NAME,
-                formattedDate)
-                .prepare();
-        List<DiaryEntry> diaryEntries = this.query(preparedQuery);
-        List<String> food = new ArrayList<>();
-        for (DiaryEntry entry : diaryEntries) {
-            food.add(entry.getEntry());
-        }
-        return food;
+                .ENTRY_FIELD_NAME, DiaryEntry.TIME_FIELD_NAME).orderBy(DiaryEntry
+                .TIME_FIELD_NAME, true).where().eq(DiaryEntry.FORMATTED_DATE_FIELD_NAME,
+                formattedDate).prepare();
+        return this.query(preparedQuery);
     }
 }

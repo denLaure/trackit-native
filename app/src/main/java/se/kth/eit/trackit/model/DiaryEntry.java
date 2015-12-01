@@ -16,6 +16,7 @@ public class DiaryEntry {
     public final static String DATE_FIELD_NAME = "date";
     public final static String FORMATTED_DATE_FIELD_NAME = "formatted_date";
     public final static String ENTRY_FIELD_NAME = "entry";
+    public final static String TIME_FIELD_NAME = "time";
 
     @DatabaseField(generatedId = true)
     private int id;
@@ -32,7 +33,7 @@ public class DiaryEntry {
     @DatabaseField(canBeNull = false, columnName = FORMATTED_DATE_FIELD_NAME)
     private String formattedDate;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, columnName = TIME_FIELD_NAME)
     private String time;
 
     DiaryEntry() {
@@ -46,7 +47,7 @@ public class DiaryEntry {
         this.date = dateFormat.format(date);
         dateFormat = new SimpleDateFormat("EEEE', 'MMMM' 'd", Locale.US);
         this.formattedDate = dateFormat.format(date);
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        dateFormat = new SimpleDateFormat("HH:mm", Locale.US);
         this.time = dateFormat.format(date);
     }
 
@@ -56,5 +57,9 @@ public class DiaryEntry {
 
     public String getEntry() {
         return entry;
+    }
+
+    public String getTime() {
+        return time;
     }
 }
