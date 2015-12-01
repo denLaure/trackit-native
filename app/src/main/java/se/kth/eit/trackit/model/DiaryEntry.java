@@ -17,11 +17,12 @@ public class DiaryEntry {
     public final static String FORMATTED_DATE_FIELD_NAME = "formatted_date";
     public final static String ENTRY_FIELD_NAME = "entry";
     public final static String TIME_FIELD_NAME = "time";
+    public final static String TYPE_FIELD_NAME = "type";
 
     @DatabaseField(generatedId = true)
     private int id;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, columnName = TYPE_FIELD_NAME)
     private DiaryEntryType type;
 
     @DatabaseField(canBeNull = false, columnName = ENTRY_FIELD_NAME)
@@ -61,5 +62,9 @@ public class DiaryEntry {
 
     public String getTime() {
         return time;
+    }
+
+    public DiaryEntryType getType() {
+        return type;
     }
 }
