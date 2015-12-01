@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import se.kth.eit.trackit.R;
+import se.kth.eit.trackit.persistence.HelperFactory;
 
-import java.util.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -18,9 +19,9 @@ public class DiaryListAdapter extends BaseAdapter {
 
     Context context;
 
-    private List<Date> datesList;
+    private List<String> datesList;
 
-    public DiaryListAdapter(Context context, List<Date> datesList) {
+    public DiaryListAdapter(Context context, List<String> datesList) {
         this.context = context;
         this.datesList = datesList;
     }
@@ -58,8 +59,39 @@ public class DiaryListAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.diary_list_item, viewGroup, false);
         }
-        Date date = datesList.get(i);
-        ((TextView) view.findViewById(R.id.date_label)).setText(date.toString());
+        final String date = datesList.get(i);
+        ((TextView) view.findViewById(R.id.date_label)).setText(date);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClicked(view, date);
+            }
+        });
         return view;
+    }
+
+    /**
+     * Shows or hides inner content of the card depending on whether it's already shown or not.
+     * @param view Card view which content should be shown/hidden.
+     * @param date Formatted date that corresponds to the given card view.
+     */
+    private void onItemClicked(View view, String date) {
+        ViewGroup gr = (ViewGroup) view.findViewById(R.id.date_list_layout);
+        if (gr.getChildCount() == 0) {
+            try {
+                List<String> list = HelperFactory.getHelper().getDiaryDAO()
+                        .getEntriesByDate(date);
+                for (String food : list) {
+                    TextView tv = new TextView(context);
+                    tv.setText(food);
+                    ((ViewGroup) view.findViewById(R.id.date_list_layout)).addView(tv);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            gr.removeAllViews();
+        }
     }
 }

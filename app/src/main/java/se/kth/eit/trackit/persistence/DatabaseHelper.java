@@ -10,7 +10,6 @@ import se.kth.eit.trackit.model.DiaryEntryType;
 
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Database open helper.
@@ -47,15 +46,25 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, DiaryEntry.class);
-            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Pasta", new Date()));
-            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Coffee", new Date()));
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, -1);
-            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Risotto", calendar.getTime()));
-            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Tea", calendar.getTime()));
+            getDiaryDAO().create(
+                    new DiaryEntry(DiaryEntryType.FOOD, "Pasta", calendar.getTime()));
+            calendar.add(Calendar.HOUR, -3);
+            getDiaryDAO().create(
+                    new DiaryEntry(DiaryEntryType.FOOD, "Coffee", calendar.getTime()));
+            calendar.add(Calendar.DATE, +1);
+            getDiaryDAO().create(
+                    new DiaryEntry(DiaryEntryType.FOOD, "Risotto", calendar.getTime()));
+            calendar.add(Calendar.HOUR, -5);
+            getDiaryDAO().create(
+                    new DiaryEntry(DiaryEntryType.FOOD, "Tea", calendar.getTime()));
             calendar.add(Calendar.DATE, -5);
-            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Cabbage", calendar.getTime()));
-            getDiaryDAO().create(new DiaryEntry(DiaryEntryType.FOOD, "Juice", calendar.getTime()));
+            getDiaryDAO().create(
+                    new DiaryEntry(DiaryEntryType.FOOD, "Cabbage", calendar.getTime()));
+            calendar.add(Calendar.HOUR, -5);
+            getDiaryDAO().create(
+                    new DiaryEntry(DiaryEntryType.FOOD, "Juice", calendar.getTime()));
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
