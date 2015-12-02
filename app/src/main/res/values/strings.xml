@@ -4,4 +4,5 @@
     <string name="meal">Meal</string>
     <string name="symptom">Symptom</string>
     <string name="title_activity_add_meal">Add Meal</string>
+    <string name="time">Time:</string>
 </resources>
