@@ -1,5 +1,6 @@
 package se.kth.eit.trackit;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.view.View;
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import se.kth.eit.trackit.persistence.HelperFactory;
 import se.kth.eit.trackit.view.DiaryFragment;
@@ -56,6 +59,17 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupFAButton() {
         fab = (FloatingActionMenu) findViewById(R.id.fab);
+        findViewById(R.id.add_meal_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startAddMealActivity();
+            }
+        });
+    }
+
+    private void startAddMealActivity() {
+        Intent intent = new Intent(this, AddMealActivity.class);
+        startActivity(intent);
     }
 
     /**

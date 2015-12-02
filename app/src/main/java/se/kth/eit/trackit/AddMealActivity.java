@@ -1,0 +1,155 @@
+package se.kth.eit.trackit;
+
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TimePicker;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+public class AddMealActivity extends AppCompatActivity {
+
+    private final static String YEAR = "year";
+    private final static String MONTH = "month";
+    private final static String DAY = "day";
+    private final static String HOUR = "hour";
+    private final static String MINUTE = "minute";
+
+    private EditText dateInput;
+    private EditText timeInput;
+    private Calendar calendar = Calendar.getInstance();
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy",
+            Locale.US);
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm",
+            Locale.US);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_meal);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.ic_clear_white_24dp);
+        setupDateInput();
+        setupTimeInput();
+    }
+
+    private void setupDateInput() {
+        dateInput = (EditText) findViewById(R.id.date_input);
+        dateInput.setText(dateFormat.format(calendar.getTime()));
+        findViewById(R.id.calendar_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDateDialog();
+            }
+        });
+        dateInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDateDialog();
+            }
+        });
+    }
+
+    private void setupTimeInput() {
+        timeInput = (EditText) findViewById(R.id.time_input);
+        timeInput.setText(timeFormat.format(calendar.getTime()));
+        timeInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimeDialog();
+            }
+        });
+    }
+
+    private void setDate(int year, int month, int day) {
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        dateInput.setText(dateFormat.format(calendar.getTime()));
+    }
+
+    private void showDateDialog() {
+        DatePickerFragment datePicker = DatePickerFragment
+                .newInstance(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
+        datePicker.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    private void setTime(int hour, int minute) {
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        timeInput.setText(timeFormat.format(calendar.getTime()));
+    }
+
+    private void showTimeDialog() {
+        TimePickerFragment timePicker = TimePickerFragment.newInstance(
+                calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+        timePicker.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        static DatePickerFragment newInstance(int year, int month, int day) {
+            DatePickerFragment datePicker = new DatePickerFragment();
+            Bundle args = new Bundle();
+            args.putInt(YEAR, year);
+            args.putInt(MONTH, month);
+            args.putInt(DAY, day);
+            datePicker.setArguments(args);
+
+            return datePicker;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            int year = getArguments().getInt(YEAR);
+            int month = getArguments().getInt(MONTH);
+            int day = getArguments().getInt(DAY);
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            ((AddMealActivity) getActivity()).setDate(year, month, day);
+        }
+    }
+
+    public static class TimePickerFragment extends DialogFragment
+            implements TimePickerDialog.OnTimeSetListener {
+
+        static TimePickerFragment newInstance(int hour, int minute) {
+            TimePickerFragment timePicker = new TimePickerFragment();
+            Bundle args = new Bundle();
+            args.putInt(HOUR, hour);
+            args.putInt(MINUTE, minute);
+            timePicker.setArguments(args);
+
+            return timePicker;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            int hour = getArguments().getInt(HOUR);
+            int minute = getArguments().getInt(MINUTE);
+            return new TimePickerDialog(getActivity(), this, hour, minute,
+                    DateFormat.is24HourFormat(getActivity()));
+        }
+
+        @Override
+        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+            ((AddMealActivity) getActivity()).setTime(hour, minute);
+        }
+    }
+}
