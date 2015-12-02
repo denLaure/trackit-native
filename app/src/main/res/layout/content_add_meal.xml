@@ -14,6 +14,8 @@
         tools:context="se.kth.eit.trackit.AddMealActivity">
 
         <LinearLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -27,6 +29,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="5dp"/>
                 <EditText
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:id="@+id/date_input"
                         android:layout_weight="0.4"
                         android:layout_width="0dp"
@@ -40,6 +44,8 @@
                         android:gravity="right"
                         android:layout_marginRight="5dp"/>
                 <EditText
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:id="@+id/time_input"
                         android:layout_weight="0.3"
                         android:layout_width="0dp"
