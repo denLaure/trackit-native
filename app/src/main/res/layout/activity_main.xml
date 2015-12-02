@@ -53,25 +53,23 @@
                 <com.github.clans.fab.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_add_white_24dp"
+                        android:src="@drawable/ic_restaurant_menu_black_24dp"
+                        fab:fab_colorNormal="#FFFFFF"
+                        app:fab_colorPressed="#FFFFFF"
+                        app:fab_colorRipple="#c2c2c2"
                         fab:fab_size="mini"
-                        fab:fab_label="Menu item 1" />
+                        fab:fab_label="@string/meal" />
 
                 <com.github.clans.fab.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_add_white_24dp"
+                        android:src="@drawable/ic_error_outline_black_24dp"
+                        fab:fab_colorNormal="#FFFFFF"
+                        app:fab_colorPressed="#FFFFFF"
+                        app:fab_colorRipple="#c2c2c2"
                         fab:fab_size="mini"
-                        fab:fab_label="Menu item 2" />
+                        fab:fab_label="@string/symptom" />
 
         </com.github.clans.fab.FloatingActionMenu>
-
-    <!--com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_add_white_24dp"/-->
 
 </android.support.design.widget.CoordinatorLayout>
