@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import se.kth.eit.trackit.R;
 import se.kth.eit.trackit.model.DiaryEntry;
@@ -78,9 +79,11 @@ public class DiaryListAdapter extends BaseAdapter {
      * @param date Formatted date that corresponds to the given card view.
      */
     private void onItemClicked(View view, String date) {
+        ImageView arrowIcon = (ImageView) view.findViewById(R.id.down_arrow_icon);
         ViewGroup gr = (ViewGroup) view.findViewById(R.id.date_list_layout);
         if (gr.getChildCount() == 0) {
             try {
+                arrowIcon.setVisibility(View.INVISIBLE);
                 List<DiaryEntry> list = HelperFactory.getHelper().getDiaryDAO()
                         .getEntriesByDate(date);
                 for (DiaryEntry entry : list) {
@@ -91,6 +94,7 @@ public class DiaryListAdapter extends BaseAdapter {
                 e.printStackTrace();
             }
         } else {
+            arrowIcon.setVisibility(View.VISIBLE);
             gr.removeAllViews();
         }
     }
