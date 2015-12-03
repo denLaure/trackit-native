@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.view.View;
-import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import se.kth.eit.trackit.persistence.HelperFactory;
 import se.kth.eit.trackit.view.DiaryFragment;
@@ -162,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             if (position == 0) {
                 fab.showMenuButton(true);
             } else {
-               fab.hideMenuButton(true);
+                fab.hideMenuButton(true);
             }
         }
 
