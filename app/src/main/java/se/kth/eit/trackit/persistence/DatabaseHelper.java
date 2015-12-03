@@ -59,7 +59,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             calendar.add(Calendar.HOUR, -5);
             getDiaryDAO().create(
                     new DiaryEntry(DiaryEntryType.FOOD, "Tea", calendar.getTime()));
-            calendar.add(Calendar.DATE, -5);
+            calendar.add(Calendar.DATE, -2);
             getDiaryDAO().create(
                     new DiaryEntry(DiaryEntryType.FOOD, "Cabbage", calendar.getTime()));
             calendar.add(Calendar.HOUR, -5);
