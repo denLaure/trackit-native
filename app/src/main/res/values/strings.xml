@@ -5,4 +5,14 @@
     <string name="symptom">Symptom</string>
     <string name="title_activity_add_meal">Add Meal</string>
     <string name="time">Time:</string>
+    <string name="i_ate">I ate:</string>
+    <string name="add_food">ADD FOOD</string>
+    <string name="i_drank">A drank:</string>
+    <string name="add_drink">ADD DRINK</string>
+    <string name="meal_eaten">Meal eaten:</string>
+    <string name="peace">In peace and quiet</string>
+    <string name="hurry">In a hurry and stressed</string>
+    <string name="guilty">With a guilty conscience</string>
+    <string name="cancel">CANCEL</string>
+    <string name="save">SAVE</string>
 </resources>
