@@ -53,7 +53,7 @@ public class DiaryEntriesDAO extends BaseDaoImpl<DiaryEntry, Integer> {
         QueryBuilder<DiaryEntry, Integer> queryBuilder = this.queryBuilder();
         PreparedQuery<DiaryEntry> preparedQuery = queryBuilder.selectColumns(DiaryEntry
                 .ENTRY_FIELD_NAME, DiaryEntry.TIME_FIELD_NAME, DiaryEntry.TYPE_FIELD_NAME)
-                .orderBy(DiaryEntry.TIME_FIELD_NAME, true).where()
+                .orderBy(DiaryEntry.TIME_FIELD_NAME, false).where()
                 .eq(DiaryEntry.FORMATTED_DATE_FIELD_NAME, formattedDate).prepare();
         return this.query(preparedQuery);
     }
