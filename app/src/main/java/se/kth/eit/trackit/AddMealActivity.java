@@ -3,6 +3,7 @@ package se.kth.eit.trackit;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,21 @@ public class AddMealActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_clear_white_24dp);
         setupDateInput();
         setupTimeInput();
+        setupButtons();
+    }
+
+    private void setupButtons() {
+        findViewById(R.id.add_food_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startFoodActivity();
+            }
+        });
+    }
+
+    private void startFoodActivity() {
+        Intent intent = new Intent(this, FoodActivity.class);
+        startActivity(intent);
     }
 
     private void setupDateInput() {
