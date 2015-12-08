@@ -17,4 +17,5 @@
     <string name="save">SAVE</string>
     <string name="title_activity_food">Food</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_select_product">SelectProductActivity</string>
 </resources>
