@@ -3,8 +3,9 @@
           android:id="@+id/product_name_label"
           android:paddingLeft="16dp"
           android:paddingRight="16dp"
-          android:paddingTop="8dp"
-          android:paddingBottom="8dp"
+          android:paddingTop="10dp"
+          android:paddingBottom="10dp"
+          android:textSize="11pt"
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
 

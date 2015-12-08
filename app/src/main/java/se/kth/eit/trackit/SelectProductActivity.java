@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+import se.kth.eit.trackit.view.DividerItemDecoration;
 import se.kth.eit.trackit.view.ProductsListAdapter;
 
 import java.util.ArrayList;
@@ -47,6 +49,9 @@ public class SelectProductActivity extends AppCompatActivity {
         productNames = new ArrayList<>();
         adapter = new ProductsListAdapter(this, productNames);
         listView.setAdapter(adapter);
+        listView.addItemDecoration(
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        listView.setItemAnimator(new DefaultItemAnimator());
         new GetProductsAsyncTask().execute();
     }
 
