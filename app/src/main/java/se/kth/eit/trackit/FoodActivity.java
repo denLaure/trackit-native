@@ -37,6 +37,8 @@ public class FoodActivity extends AppCompatActivity {
      */
     private ViewPager viewPager;
 
+    private FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,19 +55,13 @@ public class FoodActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.addOnPageChangeListener(sectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.hide();
     }
 
     /**
@@ -107,7 +103,8 @@ public class FoodActivity extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentPagerAdapter
+            implements ViewPager.OnPageChangeListener {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -136,6 +133,26 @@ public class FoodActivity extends AppCompatActivity {
                     return "RECIPES";
             }
             return null;
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset,
+                int positionOffsetPixels) {
+            //Not used.
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            if (position == 2) {
+                fab.show();
+            } else {
+                fab.hide();
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            //Not used.
         }
     }
 }
