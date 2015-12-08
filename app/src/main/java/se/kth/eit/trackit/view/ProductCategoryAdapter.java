@@ -51,14 +51,19 @@ public class ProductCategoryAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.category_list_item, viewGroup, false);
         }
+        final ProductCategory currentCategory = categories.get(i);
         ((ImageView) view.findViewById(R.id.category_image))
-                .setImageResource(categories.get(i).getImageId());
+                .setImageResource(currentCategory.getImageId());
         ((TextView) view.findViewById(R.id.category_name_label))
-                .setText(categories.get(i).getName());
+                .setText(currentCategory.getName());
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, SelectProductActivity.class);
+                intent.putExtra(SelectProductActivity.CATEGORY_ID_EXTRA,
+                        currentCategory.getId());
+                intent.putExtra(SelectProductActivity.CATEGORY_NAME_EXTRA,
+                        currentCategory.getName());
                 context.startActivity(intent);
             }
         });
