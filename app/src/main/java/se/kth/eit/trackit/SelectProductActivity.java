@@ -20,10 +20,13 @@ import java.util.List;
 public class SelectProductActivity extends AppCompatActivity {
 
     private static final String USDA_API_KEY = "ARAvbfMmDAgomdTL0YkuVNzNRCbZehXyjkHZrTNL";
+    public static final String CATEGORY_ID_EXTRA = "CategoryId";
+    public static final String CATEGORY_NAME_EXTRA = "CategoryName";
 
     private List<String> productNames;
     private ProductsListAdapter adapter;
     private RecyclerView listView;
+    private String categoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,12 @@ public class SelectProductActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getIntent().getStringExtra(CATEGORY_NAME_EXTRA));
+        categoryId = getIntent().getStringExtra(CATEGORY_ID_EXTRA);
+        setUpListView();
+    }
+
+    private void setUpListView() {
         listView = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(layoutManager);
@@ -55,7 +64,7 @@ public class SelectProductActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... voids) {
-            String url = "http://api.nal.usda.gov/ndb/list?offset=" +
+            String url = "http://api.nal.usda.gov/ndb/search/?fg=" + categoryId + "&offset=" +
                     String.valueOf(productNames.size()) + "&api_key=" + USDA_API_KEY;
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
