@@ -22,7 +22,7 @@ import java.util.List;
 
 public class SelectProductActivity extends AppCompatActivity {
 
-    private static final String USDA_API_KEY = "ARAvbfMmDAgomdTL0YkuVNzNRCbZehXyjkHZrTNL";
+    public static final String USDA_API_KEY = "ARAvbfMmDAgomdTL0YkuVNzNRCbZehXyjkHZrTNL";
     public static final String CATEGORY_ID_EXTRA = "CategoryId";
     public static final String CATEGORY_NAME_EXTRA = "CategoryName";
 
