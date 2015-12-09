@@ -3,9 +3,11 @@ package se.kth.eit.trackit.view;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import se.kth.eit.trackit.R;
+import se.kth.eit.trackit.SelectProductActivity;
 
 import java.util.List;
 
@@ -31,7 +33,14 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(productNames.get(position));
+        final String productName = productNames.get(position);
+        holder.textView.setText(productName);
+        holder.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((SelectProductActivity) context).returnProduct(productName);
+            }
+        });
     }
 
     @Override

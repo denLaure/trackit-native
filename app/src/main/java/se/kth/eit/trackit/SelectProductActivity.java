@@ -1,6 +1,7 @@
 package se.kth.eit.trackit;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,12 @@ public class SelectProductActivity extends AppCompatActivity {
         new GetProductsAsyncTask().execute();
     }
 
+    public void returnProduct(String productName) {
+        Intent intent = new Intent();
+        intent.putExtra(AddMealActivity.ADDED_PRODUCT_EXTRA, productName);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
     private class GetProductsAsyncTask extends AsyncTask<Void, Void, String> {
 
         private ProgressDialog progressDialog;
@@ -69,28 +76,40 @@ public class SelectProductActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... voids) {
-            String url = "http://api.nal.usda.gov/ndb/search/?fg=" + categoryId + "&offset=" +
-                    String.valueOf(productNames.size()) + "&api_key=" + USDA_API_KEY;
-            RestTemplate restTemplate = new RestTemplate();
-            restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-            return restTemplate.getForObject(url, String.class, "Android");
+//            String url = "http://api.nal.usda.gov/ndb/search/?fg=" + categoryId + "&offset=" +
+//                    String.valueOf(productNames.size()) + "&api_key=" + USDA_API_KEY;
+//            RestTemplate restTemplate = new RestTemplate();
+//            restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+//            return restTemplate.getForObject(url, String.class, "Android");
+            return "";
         }
 
         @Override
         protected void onPostExecute(String json) {
             super.onPostExecute(json);
             progressDialog.hide();
-            try {
-                JSONObject main = new JSONObject(json);
-                JSONArray list = main.getJSONObject("list").getJSONArray("item");
-                for (int i = 0; i < list.length(); i++) {
-                    productNames.add(list.getJSONObject(i).getString("name"));
-                }
-                adapter.setProductNames(productNames);
-                adapter.notifyDataSetChanged();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            productNames.add("Test product 1");
+            productNames.add("Test product 2");
+            productNames.add("Test product 3");
+            productNames.add("Test product 4");
+            productNames.add("Test product 5");
+            productNames.add("Test product 6");
+            productNames.add("Test product 7");
+            productNames.add("Test product 8");
+            productNames.add("Test product 9");
+            adapter.setProductNames(productNames);
+            adapter.notifyDataSetChanged();
+//            try {
+//                JSONObject main = new JSONObject(json);
+//                JSONArray list = main.getJSONObject("list").getJSONArray("item");
+//                for (int i = 0; i < list.length(); i++) {
+//                    productNames.add(list.getJSONObject(i).getString("name"));
+//                }
+//                adapter.setProductNames(productNames);
+//                adapter.notifyDataSetChanged();
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 }

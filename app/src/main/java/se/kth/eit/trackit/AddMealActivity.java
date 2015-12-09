@@ -10,12 +10,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class AddMealActivity extends AppCompatActivity {
@@ -25,6 +29,8 @@ public class AddMealActivity extends AppCompatActivity {
     private final static String DAY = "day";
     private final static String HOUR = "hour";
     private final static String MINUTE = "minute";
+    public static final int REQUEST_ADD_FOOD = 1;
+    public static final String ADDED_PRODUCT_EXTRA = "addedProduct";
 
     private EditText dateInput;
     private EditText timeInput;
@@ -33,6 +39,9 @@ public class AddMealActivity extends AppCompatActivity {
             Locale.US);
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm",
             Locale.US);
+    private List<String> foods;
+    private ArrayAdapter<String> addedFoodAdapter;
+    private ListView addedListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +51,17 @@ public class AddMealActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_clear_white_24dp);
+        foods = new ArrayList<>();
+        setupAddedFoodListView();
         setupDateInput();
         setupTimeInput();
         setupButtons();
+    }
+
+    private void setupAddedFoodListView() {
+        addedFoodAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
+        addedListView = (ListView) findViewById(R.id.added_food_list);
+        addedListView.setAdapter(addedFoodAdapter);
     }
 
     private void setupButtons() {
@@ -58,7 +75,16 @@ public class AddMealActivity extends AppCompatActivity {
 
     private void startFoodActivity() {
         Intent intent = new Intent(this, FoodActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_ADD_FOOD);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_ADD_FOOD && data != null &&
+                data.hasExtra(ADDED_PRODUCT_EXTRA)) {
+            foods.add(data.getStringExtra(ADDED_PRODUCT_EXTRA));
+            addedFoodAdapter.notifyDataSetChanged();
+        }
     }
 
     private void setupDateInput() {

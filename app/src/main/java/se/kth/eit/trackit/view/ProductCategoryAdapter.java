@@ -1,5 +1,6 @@
 package se.kth.eit.trackit.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import se.kth.eit.trackit.AddMealActivity;
 import se.kth.eit.trackit.R;
 import se.kth.eit.trackit.SelectProductActivity;
 import se.kth.eit.trackit.model.ProductCategory;
@@ -64,7 +66,8 @@ public class ProductCategoryAdapter extends BaseAdapter {
                         currentCategory.getId());
                 intent.putExtra(SelectProductActivity.CATEGORY_NAME_EXTRA,
                         currentCategory.getName());
-                context.startActivity(intent);
+                ((Activity) context).startActivityForResult(intent,
+                        AddMealActivity.REQUEST_ADD_FOOD);
             }
         });
         return view;
