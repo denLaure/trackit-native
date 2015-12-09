@@ -10,11 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import se.kth.eit.trackit.model.DiaryEntry;
@@ -66,10 +64,16 @@ public class AddMealActivity extends AppCompatActivity {
     private void setupAddedFoodListView() {
         addedListView = (LinearLayout) findViewById(R.id.added_food_list);
         for (String food : foods) {
-            TextView textView = new TextView(this);
-            textView.setText(food);
-            addedListView.addView(textView);
+            addFoodTextView(food);
         }
+    }
+
+    private void addFoodTextView(String food) {
+        TextView textView = new TextView(this);
+        textView.setTextAppearance(this, android.R.style.TextAppearance_Material_Subhead);
+        textView.setPadding(0, 8, 0, 8);
+        textView.setText(food);
+        addedListView.addView(textView);
     }
 
     private void setupButtons() {
@@ -119,9 +123,7 @@ public class AddMealActivity extends AppCompatActivity {
                 data.hasExtra(ADDED_PRODUCT_EXTRA)) {
             String food = data.getStringExtra(ADDED_PRODUCT_EXTRA);
             foods.add(food);
-            TextView textView = new TextView(this);
-            textView.setText(food);
-            addedListView.addView(textView);
+            addFoodTextView(food);
         }
     }
 
