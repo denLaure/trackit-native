@@ -30,6 +30,7 @@ public class SelectProductActivity extends AppCompatActivity {
     private ProductsListAdapter adapter;
     private RecyclerView listView;
     private String categoryId;
+    private String categoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,8 @@ public class SelectProductActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getIntent().getStringExtra(CATEGORY_NAME_EXTRA));
+        categoryName = getIntent().getStringExtra(CATEGORY_NAME_EXTRA);
+        getSupportActionBar().setTitle(categoryName);
         categoryId = getIntent().getStringExtra(CATEGORY_ID_EXTRA);
         setUpListView();
     }
@@ -62,6 +64,15 @@ public class SelectProductActivity extends AppCompatActivity {
         setResult(RESULT_OK, intent);
         finish();
     }
+
+    private void finishWithFailure() {
+        Intent intent = new Intent();
+        intent.putExtra(AddMealActivity.FAILURE_MESSAGE_EXTRA, "Couldn't retrieve food list "
+                + "for '" + categoryName + "' category");
+        setResult(RESULT_CANCELED, intent);
+        finish();
+    }
+
     private class GetProductsAsyncTask extends AsyncTask<Void, Void, String> {
 
         private ProgressDialog progressDialog;
@@ -76,30 +87,23 @@ public class SelectProductActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... voids) {
-            String url = "http://api.nal.usda.gov/ndb/search/?format=json&q=&fg=" +
-                    categoryId + "&offset=" + String.valueOf(productNames.size()) +
-                    "&api_key=" + USDA_API_KEY;
-            RestTemplate restTemplate = new RestTemplate();
-            restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-            return restTemplate.getForObject(url, String.class, "Android");
-            //return "";
+            try {
+                String url = "http://api.nal.usda.gov/ndb/search/?format=json&q=&fg=" +
+                        categoryId + "&offset=" + String.valueOf(productNames.size()) +
+                        "&api_key=" + USDA_API_KEY;
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+                return restTemplate.getForObject(url, String.class, "Android");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "plug";
         }
 
         @Override
         protected void onPostExecute(String json) {
             super.onPostExecute(json);
             progressDialog.hide();
-//            productNames.add("Test product 1");
-//            productNames.add("Test product 2");
-//            productNames.add("Test product 3");
-//            productNames.add("Test product 4");
-//            productNames.add("Test product 5");
-//            productNames.add("Test product 6");
-//            productNames.add("Test product 7");
-//            productNames.add("Test product 8");
-//            productNames.add("Test product 9");
-//            adapter.setProductNames(productNames);
-//            adapter.notifyDataSetChanged();
             try {
                 JSONObject main = new JSONObject(json);
                 JSONArray list = main.getJSONObject("list").getJSONArray("item");
@@ -110,6 +114,7 @@ public class SelectProductActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
+                finishWithFailure();
             }
         }
     }

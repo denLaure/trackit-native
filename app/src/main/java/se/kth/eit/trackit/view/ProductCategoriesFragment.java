@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+import se.kth.eit.trackit.FoodActivity;
 import se.kth.eit.trackit.R;
 import se.kth.eit.trackit.SelectProductActivity;
 import se.kth.eit.trackit.model.ProductCategory;
@@ -30,13 +31,6 @@ public class ProductCategoriesFragment extends Fragment {
 
     public ProductCategoriesFragment() {
         categories = new ArrayList<>();
-//        categories.add(new ProductCategory("3500", "American Indian/Alaska Native Foods",
-//                R.drawable.bakery));
-//        categories.add(new ProductCategory("1800", "Baked Products", R.drawable.bakery));
-//        categories.add(new ProductCategory("1300", "Beef Products", R.drawable.bakery));
-//        categories.add(new ProductCategory("0800", "Breakfast Cereals", R.drawable.bakery));
-//        categories.add(new ProductCategory("2000", "Cereal Grains and Pasta",
-//                R.drawable.bakery));
     }
 
     @Override
@@ -63,12 +57,17 @@ public class ProductCategoriesFragment extends Fragment {
 
         @Override
         protected String doInBackground(Void... voids) {
-            String url = "http://api.nal.usda"
-                    + ".gov/ndb/list?format=json&lt=g&sort=ip&api_key=" +
-                    SelectProductActivity.USDA_API_KEY;
-            RestTemplate restTemplate = new RestTemplate();
-            restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-            return restTemplate.getForObject(url, String.class, "Android");
+            try {
+                String url = "http://api.nal.usda" +
+                        ".gov/ndb/list?format=json&lt=g&sort=ip&api_key=" +
+                        SelectProductActivity.USDA_API_KEY;
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+                return restTemplate.getForObject(url, String.class, "Android");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "plug";
         }
 
         @Override
@@ -89,6 +88,7 @@ public class ProductCategoriesFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
+                ((FoodActivity) getActivity()).finishWithFailure();
             }
         }
     }
