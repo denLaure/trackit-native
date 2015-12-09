@@ -75,6 +75,12 @@ public class AddMealActivity extends AppCompatActivity {
                 startFoodActivity();
             }
         });
+        findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
