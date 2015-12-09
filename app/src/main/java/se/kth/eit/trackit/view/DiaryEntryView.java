@@ -20,7 +20,8 @@ public class DiaryEntryView extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.diary_entry_view, this);
         ((TextView) findViewById(R.id.time_label)).setText(diaryEntry.getTime());
-        ((TextView) findViewById(R.id.entry_label)).setText(diaryEntry.getEntry());
+        ((TextView) findViewById(R.id.entry_label)).setText(diaryEntry.getEntry()
+                .replaceAll(";", "\n"));
         int imageResourceId = DiaryEntryType.FOOD.equals(diaryEntry.getType()) ?
                 R.drawable.food : R.drawable.symptom;
         ((ImageView) findViewById(R.id.entry_image)).setImageResource(imageResourceId);
