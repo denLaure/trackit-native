@@ -1,23 +1,19 @@
 package se.kth.eit.trackit;
 
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 import se.kth.eit.trackit.view.ProductCategoriesFragment;
 
@@ -74,7 +70,20 @@ public class FoodActivity extends AppCompatActivity {
                     data.getStringExtra(AddMealActivity.ADDED_PRODUCT_EXTRA));
             setResult(RESULT_OK, intent);
             finish();
+        } else if (resultCode == RESULT_CANCELED && requestCode ==
+                AddMealActivity.REQUEST_ADD_FOOD && data != null &&
+                data.hasExtra(AddMealActivity.FAILURE_MESSAGE_EXTRA)) {
+            Snackbar.make(fab, data.getStringExtra(AddMealActivity.FAILURE_MESSAGE_EXTRA),
+                    Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    public void finishWithFailure() {
+        Intent intent = new Intent();
+        intent.putExtra(AddMealActivity.FAILURE_MESSAGE_EXTRA, "Failed to retrieve list of "
+                + "product categories");
+        setResult(RESULT_CANCELED, intent);
+        finish();
     }
 
     /**
@@ -107,7 +116,8 @@ public class FoodActivity extends AppCompatActivity {
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_food, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            textView.setText(getString(R.string.section_format,
+                    getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }
@@ -125,7 +135,7 @@ public class FoodActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 1) return new ProductCategoriesFragment();
+            if (position == 1) { return new ProductCategoriesFragment(); }
             return PlaceholderFragment.newInstance(position + 1);
         }
 

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,6 +36,7 @@ public class AddMealActivity extends AppCompatActivity {
     private final static String MINUTE = "minute";
     public static final int REQUEST_ADD_FOOD = 1;
     public static final String ADDED_PRODUCT_EXTRA = "addedProduct";
+    public static final String FAILURE_MESSAGE_EXTRA = "failMessage";
 
     private EditText dateInput;
     private EditText timeInput;
@@ -124,6 +126,11 @@ public class AddMealActivity extends AppCompatActivity {
             String food = data.getStringExtra(ADDED_PRODUCT_EXTRA);
             foods.add(food);
             addFoodTextView(food);
+        } else if (resultCode == RESULT_CANCELED && requestCode == REQUEST_ADD_FOOD &&
+                data != null && data.hasExtra(FAILURE_MESSAGE_EXTRA)) {
+            Snackbar.make(addedListView,
+                    data.getStringExtra(AddMealActivity.FAILURE_MESSAGE_EXTRA),
+                    Snackbar.LENGTH_LONG).show();
         }
     }
 
