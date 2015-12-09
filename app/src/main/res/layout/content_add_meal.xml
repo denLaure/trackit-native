@@ -64,6 +64,11 @@
             android:layout_marginTop="5dp"
             android:background="#c2c2c2"/>
 
+    <ListView
+            android:id="@+id/added_food_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     <Button
             android:id="@+id/add_food_button"
             android:layout_width="match_parent"
