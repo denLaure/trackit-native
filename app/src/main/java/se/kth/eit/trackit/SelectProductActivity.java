@@ -1,6 +1,7 @@
 package se.kth.eit.trackit;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,12 @@ public class SelectProductActivity extends AppCompatActivity {
         new GetProductsAsyncTask().execute();
     }
 
+    public void returnProduct(String productName) {
+        Intent intent = new Intent();
+        intent.putExtra(AddMealActivity.ADDED_PRODUCT_EXTRA, productName);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
     private class GetProductsAsyncTask extends AsyncTask<Void, Void, String> {
 
         private ProgressDialog progressDialog;

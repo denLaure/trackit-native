@@ -1,5 +1,6 @@
 package se.kth.eit.trackit;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -62,6 +63,18 @@ public class FoodActivity extends AppCompatActivity {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.hide();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == AddMealActivity.REQUEST_ADD_FOOD &&
+                data != null && data.hasExtra(AddMealActivity.ADDED_PRODUCT_EXTRA)) {
+            Intent intent = new Intent();
+            intent.putExtra(AddMealActivity.ADDED_PRODUCT_EXTRA,
+                    data.getStringExtra(AddMealActivity.ADDED_PRODUCT_EXTRA));
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 
     /**

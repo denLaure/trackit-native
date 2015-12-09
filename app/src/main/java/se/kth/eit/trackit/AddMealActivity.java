@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,6 +26,8 @@ public class AddMealActivity extends AppCompatActivity {
     private final static String DAY = "day";
     private final static String HOUR = "hour";
     private final static String MINUTE = "minute";
+    public static final int REQUEST_ADD_FOOD = 1;
+    public static final String ADDED_PRODUCT_EXTRA = "addedProduct";
 
     private EditText dateInput;
     private EditText timeInput;
@@ -58,7 +61,15 @@ public class AddMealActivity extends AppCompatActivity {
 
     private void startFoodActivity() {
         Intent intent = new Intent(this, FoodActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_ADD_FOOD);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_ADD_FOOD && data != null &&
+                data.hasExtra(ADDED_PRODUCT_EXTRA)) {
+            Log.d("MINETAG", data.getStringExtra(ADDED_PRODUCT_EXTRA));
+        }
     }
 
     private void setupDateInput() {
