@@ -15,7 +15,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
+import se.kth.eit.trackit.model.DiaryEntry;
+import se.kth.eit.trackit.model.DiaryEntryType;
+import se.kth.eit.trackit.persistence.HelperFactory;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -69,6 +73,27 @@ public class AddMealActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startFoodActivity();
+            }
+        });
+        findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!foods.isEmpty()) {
+                    StringBuilder s = new StringBuilder(300);
+                    for (String food : foods) {
+                        s.append(food);
+                        s.append(";");
+                    }
+                    s.deleteCharAt(s.length()-1);
+                    try {
+                        HelperFactory.getHelper().getDiaryDAO().create(new DiaryEntry(
+                                DiaryEntryType.FOOD, s.toString(), calendar.getTime()));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } finally {
+                        finish();
+                    }
+                }
             }
         });
     }
