@@ -13,9 +13,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import se.kth.eit.trackit.model.DiaryEntry;
+import se.kth.eit.trackit.model.DiaryEntryType;
+import se.kth.eit.trackit.persistence.HelperFactory;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,8 +46,7 @@ public class AddMealActivity extends AppCompatActivity {
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm",
             Locale.US);
     private List<String> foods;
-    private ArrayAdapter<String> addedFoodAdapter;
-    private ListView addedListView;
+    private LinearLayout addedListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +64,12 @@ public class AddMealActivity extends AppCompatActivity {
     }
 
     private void setupAddedFoodListView() {
-        addedFoodAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
-        addedListView = (ListView) findViewById(R.id.added_food_list);
-        addedListView.setAdapter(addedFoodAdapter);
+        addedListView = (LinearLayout) findViewById(R.id.added_food_list);
+        for (String food : foods) {
+            TextView textView = new TextView(this);
+            textView.setText(food);
+            addedListView.addView(textView);
+        }
     }
 
     private void setupButtons() {
@@ -69,6 +77,33 @@ public class AddMealActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startFoodActivity();
+            }
+        });
+        findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!foods.isEmpty()) {
+                    StringBuilder s = new StringBuilder(300);
+                    for (String food : foods) {
+                        s.append(food);
+                        s.append(";");
+                    }
+                    s.deleteCharAt(s.length()-1);
+                    try {
+                        HelperFactory.getHelper().getDiaryDAO().create(new DiaryEntry(
+                                DiaryEntryType.FOOD, s.toString(), calendar.getTime()));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } finally {
+                        finish();
+                    }
+                }
             }
         });
     }
@@ -82,8 +117,11 @@ public class AddMealActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_ADD_FOOD && data != null &&
                 data.hasExtra(ADDED_PRODUCT_EXTRA)) {
-            foods.add(data.getStringExtra(ADDED_PRODUCT_EXTRA));
-            addedFoodAdapter.notifyDataSetChanged();
+            String food = data.getStringExtra(ADDED_PRODUCT_EXTRA);
+            foods.add(food);
+            TextView textView = new TextView(this);
+            textView.setText(food);
+            addedListView.addView(textView);
         }
     }
 

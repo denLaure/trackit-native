@@ -28,6 +28,11 @@ public class DiaryListAdapter extends BaseAdapter {
         this.datesList = datesList;
     }
 
+    public void setDatesList(List<String> datesList) {
+        this.datesList = datesList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public boolean areAllItemsEnabled() {
         return true;

@@ -34,6 +34,17 @@ public class DiaryFragment extends ListFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            ((DiaryListAdapter) getListAdapter()).setDatesList(HelperFactory.getHelper()
+                    .getDiaryDAO().getAllDates());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Sets up list view.
      */
