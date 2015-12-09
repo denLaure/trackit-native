@@ -70,6 +70,9 @@
     <LinearLayout
             android:orientation="vertical"
             android:id="@+id/added_food_list"
+            android:padding="8dp"
+            android:showDividers="middle"
+            android:divider="?android:attr/listDivider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
